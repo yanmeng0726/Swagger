@@ -44,7 +44,7 @@ paths:
         201:
           description: OK
 
-  /{drone_id}:
+  /drones/{drone_id}:
     put:
       summary: Update status and trips_left
       tags:
@@ -95,7 +95,7 @@ paths:
           description: OK
 
 
-  /{employee_id}:
+  /employees/{employee_id}:
     put:
       summary: Update pilot status
       tags:
@@ -158,7 +158,7 @@ paths:
         201:
           description: OK
           
-  /{item_id}:
+  /items/{item_id}:
     get:
       summary: get an item by id.
       tags:
@@ -415,13 +415,13 @@ components:
 
     unitPrice:
       type: number
-      example: 1980.00
+      example: 1980.05
       title: unit price
       description: unit price of item
 
     weight:
       type: number
-      example: 2.20
+      example: 2.21
       title: weight (lbs)
       description: weight item
 
