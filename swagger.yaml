@@ -350,6 +350,8 @@ paths:
       summary: Update status of an order
       tags:
       - Order
+      parameters:
+      - $ref: '#/components/parameters/orderId'
       requestBody:
         content:
           application/json:
@@ -976,7 +978,7 @@ components:
         store_id:
           $ref: "#/components/schemas/storeId"
         drone_id:
-          $ref: "#/components/schemas/storeId"
+          $ref: "#/components/schemas/droneId"
         employee_id:
           $ref: "#/components/schemas/storeId"
         total_cost:
