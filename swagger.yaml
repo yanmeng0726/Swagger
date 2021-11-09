@@ -11,6 +11,8 @@ tags:
   description: drone can deliver order 
 - name: employee
   description: pilot can control drone 
+- name: item
+  description: items are sold 
 
 paths:
   /{store_id}/drones:
@@ -97,7 +99,7 @@ paths:
     put:
       summary: Update pilot status
       tags:
-      - drone
+      - employee
       parameters:
       - $ref: '#/components/parameters/employeeId'
       requestBody:
@@ -125,6 +127,52 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Employee"
+
+  /{store_id}/items:
+    get:
+      summary: List all items for a store.
+      tags:
+      - item
+      parameters:
+      - $ref: '#/components/parameters/itemId'
+      responses:
+        '200':    # status code
+          description: A JSON array o items
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Items"
+  
+    post:
+      summary: Create an item for a store
+      tags:
+      - item
+      parameters:
+      - $ref: '#/components/parameters/itemId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createItemReq"
+      responses:
+        201:
+          description: OK
+          
+  /{item_id}:
+    get:
+      summary: get an item by id.
+      tags:
+      - item
+      parameters:
+      - $ref: '#/components/parameters/itemId'
+      responses:
+        '200':    # status code
+          description: A object of item
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Item"
+          
 components:
   schemas:
     droneId:
@@ -351,6 +399,71 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/isFree"
+  
+    itemId:
+      type: string
+      readOnly: true
+      example: a23fwItem
+      title: id
+      description: A unique signature to represent an item
+
+    name:
+      type: string
+      example: iphone
+      title: name
+      description: name of item
+
+    unitPrice:
+      type: number
+      example: 1980.00
+      title: unit price
+      description: unit price of item
+
+    weight:
+      type: number
+      example: 2.20
+      title: weight (lbs)
+      description: weight item
+
+    Item:
+      type: object
+      description: A single item
+      required:
+      - name
+      - unit_price
+      - weight
+      - store_id
+      properties:
+        id:
+          $ref: "#/components/schemas/itemId"
+        name:
+          $ref: "#/components/schemas/name"
+        unit_price:
+          $ref: "#/components/schemas/unitPrice"
+        weight:
+          $ref: "#/components/schemas/weight"
+        store_id:
+          $ref: "#/components/schemas/storeId"
+    Items:
+      type: array
+      description: A collection of selected items acquired by a query.
+      items:
+        $ref: "#/components/schemas/Item"
+  
+    createItemReq:
+      type: object
+      description: A request for create item request
+      required:
+      - name
+      - unit_price
+      - weight
+      properties:
+        name:
+          $ref: "#/components/schemas/name"
+        unit_price:
+          $ref: "#/components/schemas/unitPrice"
+        weight:
+          $ref: "#/components/schemas/weight"
     
   parameters:
     storeId:
@@ -374,3 +487,11 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/employeeId"
+
+    itemId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting one Item
+      required: true
+      schema:
+        $ref: "#/components/schemas/itemId"
