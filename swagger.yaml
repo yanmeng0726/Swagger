@@ -394,7 +394,7 @@ components:
     droneId:
       type: string
       readOnly: true
-      example: 6Ek6KBqxceCJm0OtDrone
+      example: 6Ek6KBqxceDrone
       title: id
       description: A unique signature to represent a drone
     droneStatus:
