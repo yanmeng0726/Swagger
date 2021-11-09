@@ -25,7 +25,7 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: "#/components/schemas/Drone"
+                $ref: "#/components/schemas/Drones"
     post:
       summary: Create an drone for a store
       tags:
@@ -36,10 +36,30 @@ paths:
         content:
           application/json:
             schema:
-              type: object
+              $ref: "#/components/schemas/Drone"
       responses:
         201:
           description: OK
+
+  /{drone_id}:
+    put:
+      summary: Update status and trips_left
+      tags:
+      - drone
+      parameters:
+      - $ref: '#/components/parameters/droneId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateDroneReq"
+      responses:
+        '200':    # status code
+          description: A updated object of drones
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Drone"
 
 components:
   schemas:
@@ -94,6 +114,23 @@ components:
           $ref: "#/components/schemas/droneStatus"
         store_id:
           $ref: "#/components/schemas/storeId"
+    Drones:
+      type: array
+      description: A collection of selected drones acquired by a query.
+      items:
+        $ref: "#/components/schemas/Drone"
+
+    updateDroneReq:
+      type: object
+      description: A request for updating drone request
+      required:
+      - trips_left
+      - status
+      properties:
+        trips_left:
+          $ref: "#/components/schemas/tripsLeft"
+        status:
+          $ref: "#/components/schemas/droneStatus"
   parameters:
     storeId:
       name: id
@@ -102,3 +139,10 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/storeId"
+    droneId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting one Drone
+      required: true
+      schema:
+        $ref: "#/components/schemas/droneId"
