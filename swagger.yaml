@@ -15,6 +15,12 @@ tags:
   description: items are sold 
 - name: Line
   description: item constitues line, line constitues order 
+- name: Store
+  description: store
+- name: User
+  description: customer/administrator
+- name: Order
+  description: order
 
 paths:
   /{store_id}/drones:
@@ -251,7 +257,7 @@ paths:
           
   /stores/{store_id}:
     get:
-      summary: get store by id.
+      summary: Get store by id.
       tags:
       - Store
       parameters:
@@ -266,7 +272,7 @@ paths:
 
   /stores/{store_id}/pendingIncome:
     get:
-      summary: get pending income by store id.
+      summary: Get pending income by store id.
       tags:
       - Store
       parameters:
@@ -278,6 +284,47 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/revenue"
+
+  /users:
+    post:
+      summary: Create a user account 
+      tags:
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createUserReq"
+      responses:
+        201:
+          description: OK
+
+  /users/{user_id}:
+    get:
+      summary: Get a user by id
+      tags:
+      - User
+      parameters:
+      - $ref: '#/components/parameters/userId'
+      responses:
+        '200':    # status code
+          description: A object of user
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/User"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -657,7 +704,7 @@ components:
         name:
           $ref: "#/components/schemas/storeName"
         revenue:
-          $ref: "#/components/schemas/revenue"
+          $ref: "#/components/schemas/pendingRev"
 
     Stores:
       type: array
@@ -673,6 +720,109 @@ components:
       properties:
         name:
           $ref: "#/components/schemas/storeName"
+
+    pendingRev:
+      type: object
+      description: pending revenue from pending orders
+      required:
+      - pendingRevenue
+      properties:
+        pending_revenue:
+          $ref: "#/components/schemas/revenue"
+
+
+
+    userId:
+      type: string
+      readOnly: true
+      example:  user1
+      title: id
+      description: A unique signature to represent a user
+
+    isManager:
+      type: string
+      readOnly: true
+      example:  user1
+      title: id
+      description: A unique signature to represent a user
+
+
+    userName:
+      type: string
+      example:  myan68@gatech.com
+      title: user name
+      description: user name
+
+    password:
+      type: string
+      example:  pwdisgroup33
+      title: password
+      description: password
+
+
+    address:
+      type: string
+      example:  california
+      title: address
+      description: user's address
+
+
+    customerRating:
+      type: integer
+      example:  5
+      title: rating
+      description: customer rating
+
+
+    credits:
+      type: number
+      example:  1255
+      title: credit
+      description: customer credits
+
+    User:
+      type: object
+      description: A single user
+      required:
+      - first_name
+      - last_name
+      - phone
+      - is_manager
+      - user_name
+      - password
+      - address
+      - customer_rating
+      - credits
+      properties:
+        id:
+          $ref: "#/components/schemas/userId"
+        first_name:
+          $ref: "#/components/schemas/firstName"
+        last_name:
+          $ref: "#/components/schemas/lastName"
+        phone:
+          $ref: "#/components/schemas/phone"
+        is_manager:
+          $ref: "#/components/schemas/isManager"
+        user_name:
+          $ref: "#/components/schemas/userName"
+        password:
+           $ref: "#/components/schemas/passwordd"
+        address:
+           $ref: "#/components/schemas/address"
+        customer_rating:
+           $ref: "#/components/schemas/customerRating"
+        credits:
+           $ref: "#/components/schemas/credits"
+
+
+
+
+
+
+
+
+
 
 
 
@@ -715,3 +865,10 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/lineId"
+    userId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting user
+      required: true
+      schema:
+        $ref: "#/components/schemas/userId"
