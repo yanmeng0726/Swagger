@@ -973,18 +973,8 @@ components:
       properties:
         user_id:
           $ref: "#/components/schemas/userId"
-        store_id:
-          $ref: "#/components/schemas/storeId"
-        drone_id:
-          $ref: "#/components/schemas/droneId"
-        employee_id:
-          $ref: "#/components/schemas/employeeId"
-        total_cost:
-          $ref: "#/components/schemas/totalCost"
-        total_weight:
-          $ref: "#/components/schemas/totalWeight"
-        order_status:
-          $ref: "#/components/schemas/orderStatus"
+  
+
     updateOrderReq:
       type: object
       description: A request for updating order status
