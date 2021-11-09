@@ -13,6 +13,8 @@ tags:
   description: pilot can control drone 
 - name: item
   description: items are sold 
+- name: line
+  description: item constitues line, line constitues order 
 
 paths:
   /{store_id}/drones:
@@ -172,7 +174,50 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Item"
+
+  /{order_id}/lines:
+    get:
+      summary: List all lines for an order.
+      tags:
+      - line
+      parameters:
+      - $ref: '#/components/parameters/lineId'
+      responses:
+        '200':    # status code
+          description: A JSON array of lines
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Lines"
+  
+    post:
+      summary: Create a line for an order
+      tags:
+      - line
+      parameters:
+      - $ref: '#/components/parameters/lineId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createLineReq"
+      responses:
+        201:
+          description: OK
           
+  /lines/{line_id}:
+    delete:
+      summary: delete a line by id.
+      tags:
+      - line
+      parameters:
+      - $ref: '#/components/parameters/lineId'
+      responses:
+        '200':    # status code
+          description: Null response
+
+
+
 components:
   schemas:
     droneId:
@@ -464,6 +509,65 @@ components:
           $ref: "#/components/schemas/unitPrice"
         weight:
           $ref: "#/components/schemas/weight"
+
+    lineId:
+      type: string
+      readOnly: true
+      example:  34w45Titem1
+      title: id
+      description: A unique signature to represent a line
+
+    orderId:
+      type: string
+      readOnly: true
+      example:  1w234qqorder
+      title: id
+      description: A unique signature to represent an order
+
+    quantity:
+      type: integer
+      example:  40
+      title: quantity
+      description: A quantity of each item
+
+
+    Line:
+      type: object
+      description: A single line
+      required:
+      - order_id
+      - item_id
+      - quantity
+      properties:
+        id:
+          $ref: "#/components/schemas/lineId"
+        order_id:
+          $ref: "#/components/schemas/orderId"
+        item_id:
+          $ref: "#/components/schemas/itemId"
+        quantity:
+          $ref: "#/components/schemas/quantity"
+    Lines:
+      type: array
+      description: A collection of selected lines acquired by a query.
+      items:
+        $ref: "#/components/schemas/Line"
+
+
+    createLineReq:
+      type: object
+      description: A request for create line
+      required:
+      - order_id
+      - item_id
+      - quantity
+      properties:
+        order_id:
+          $ref: "#/components/schemas/orderId"
+        item_id:
+          $ref: "#/components/schemas/itemId"
+        quantity:
+          $ref: "#/components/schemas/quantity"
     
   parameters:
     storeId:
@@ -495,3 +599,11 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/itemId"
+
+    lineId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting one Line
+      required: true
+      schema:
+        $ref: "#/components/schemas/lineId"
