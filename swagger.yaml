@@ -142,7 +142,7 @@ paths:
       tags:
       - Item
       parameters:
-      - $ref: '#/components/parameters/itemId'
+      - $ref: '#/components/parameters/storeId'
       responses:
         '200':    # status code
           description: A JSON array o items
@@ -156,7 +156,7 @@ paths:
       tags:
       - Item
       parameters:
-      - $ref: '#/components/parameters/itemId'
+      - $ref: '#/components/parameters/storeId'
       requestBody:
         content:
           application/json:
@@ -187,7 +187,7 @@ paths:
       tags:
       - Line
       parameters:
-      - $ref: '#/components/parameters/lineId'
+      - $ref: '#/components/parameters/orderId'
       responses:
         '200':    # status code
           description: A JSON array of lines
@@ -201,7 +201,7 @@ paths:
       tags:
       - Line
       parameters:
-      - $ref: '#/components/parameters/lineId'
+      - $ref: '#/components/parameters/orderId'
       requestBody:
         content:
           application/json:
@@ -283,7 +283,7 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: "#/components/schemas/revenue"
+                $ref: "#/components/schemas/pendingRev"
 
   /users:
     post:
@@ -420,7 +420,7 @@ components:
       description: the trips left before matianence
     storeId:
       type: string
-      example: 8ek6KBqxceCJm0OtStore
+      example: 8ek6KBqxceCJm0Ot
       title: store_id
       description: A unique signature to represent a store
     Drone:
@@ -765,7 +765,7 @@ components:
         name:
           $ref: "#/components/schemas/storeName"
         revenue:
-          $ref: "#/components/schemas/pendingRev"
+          $ref: "#/components/schemas/revenue"
 
     Stores:
       type: array
