@@ -978,7 +978,7 @@ components:
         store_id:
           $ref: "#/components/schemas/storeId"
         drone_id:
-          $ref: "#/components/schemas/droneId"
+          $ref: "#/components/schemas/storeId"
         employee_id:
           $ref: "#/components/schemas/storeId"
         total_cost:
