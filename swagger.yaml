@@ -8,8 +8,9 @@ servers:
     description:  Use this when running locally in dev or docker mode.
 tags:
 - name: drone
-  description: A drone which can deliver order 
-
+  description: drone can deliver order 
+- name: employee
+  description: pilot can control drone 
 
 paths:
   /{store_id}/drones:
@@ -55,12 +56,75 @@ paths:
               $ref: "#/components/schemas/updateDroneReq"
       responses:
         '200':    # status code
-          description: A updated object of drones
+          description: A updated object of drone
           content:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Drone"
 
+  /{store_id}/employees:
+    get:
+      summary: List all employees for a store.
+      tags:
+      - employee
+      parameters:
+      - $ref: '#/components/parameters/employeeId'
+      responses:
+        '200':    # status code
+          description: A JSON array of employees
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Employees"
+
+    post:
+      summary: Create an employee for a store
+      tags:
+      - employee
+      parameters:
+      - $ref: '#/components/parameters/employeeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createEmployeeReq"
+      responses:
+        201:
+          description: OK
+
+
+  /{employee_id}:
+    put:
+      summary: Update pilot status
+      tags:
+      - drone
+      parameters:
+      - $ref: '#/components/parameters/employeeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateEmployeeReq"
+      responses:
+        '200':    # status code
+          description: A updated object of employee
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Employee"
+    get:
+      summary: get a employee by id.
+      tags:
+      - employee
+      parameters:
+      - $ref: '#/components/parameters/employeeId'
+      responses:
+        '200':    # status code
+          description: A object of employees
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Employee"
 components:
   schemas:
     droneId:
@@ -148,6 +212,146 @@ components:
           $ref: "#/components/schemas/tripsLeft"
         status:
           $ref: "#/components/schemas/droneStatus"
+
+    employeeId:
+      type: string
+      readOnly: true
+      example: w3r33487y87t8employee
+      title: id
+      description: A unique signature to represent a employee
+
+    firstName:
+      type: string
+      example: Meng
+      title: first_name
+      description: the first name of employee
+
+    lastName:
+      type: string
+      example: Yan
+      title: last_name
+      description: the first name of employee
+
+    phone:
+      type: string
+      example: 951-892-0434
+      title: phone number
+      description: the phone of employee
+
+    ssn:
+      type: string
+      example: 003-59-3935
+      title: ssn
+      description: the ssn of employee, need to be encrypted in the database
+
+    licenseId:
+      type: string
+      example: 2owefkerp
+      title: license id
+      description: the license id of employee
+
+    experience:
+      type: integer
+      example: 2
+      title: experience number
+      description: the experience number of pilot
+
+
+    expirationDate:
+      type: string
+      example: 01-01-1990
+      title: expired date 
+      description: the expired date of license 
+
+    isFree:
+      type: boolean
+      example: true
+      title: is free 
+      description: the status of pilot
+    
+
+    Employee:
+      type: object
+      description: A single employee
+      required:
+      - first_name
+      - last_name
+      - phone
+      - ssn
+      - store_id
+      - license_id
+      - experience
+      - expiration_date
+      - is_free
+      properties:
+        id:
+          $ref: "#/components/schemas/employeeId"
+        first_name:
+          $ref: "#/components/schemas/firstName"
+        last_name:
+          $ref: "#/components/schemas/lastName"
+        phone:
+          $ref: "#/components/schemas/phone"
+        ssn:
+          $ref: "#/components/schemas/ssn"
+        store_id:
+          $ref: "#/components/schemas/storeId"
+        license_id:
+           $ref: "#/components/schemas/licenseId"
+        experience:
+           $ref: "#/components/schemas/experience"
+        expiration_date:
+           $ref: "#/components/schemas/expirationDate"
+        is_free:
+           $ref: "#/components/schemas/isFree"
+
+
+    Employees:
+      type: array
+      description: A collection of selected employees acquired by a query.
+      items:
+        $ref: "#/components/schemas/Employee"
+
+    createEmployeeReq:
+      type: object
+      description: A request for create employee request
+      required:
+      - first_name
+      - last_name
+      - phone
+      - ssn
+      - license_id
+      - experience
+      - expiration_date
+      - is_free
+      properties:
+        first_name:
+          $ref: "#/components/schemas/firstName"
+        last_name:
+          $ref: "#/components/schemas/lastName"
+        phone:
+          $ref: "#/components/schemas/phone"
+        ssn:
+          $ref: "#/components/schemas/ssn"
+        license_id:
+           $ref: "#/components/schemas/licenseId"
+        experience:
+           $ref: "#/components/schemas/experience"
+        expiration_date:
+           $ref: "#/components/schemas/expirationDate"
+        is_free:
+           $ref: "#/components/schemas/isFree"
+
+
+    updateEmployeeReq:
+      type: object
+      description: A request for updating employee status request
+      required:
+      - is_free
+      properties:
+        status:
+          $ref: "#/components/schemas/isFree"
+    
   parameters:
     storeId:
       name: id
@@ -163,3 +367,10 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/droneId"
+    employeeId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting one Employee
+      required: true
+      schema:
+        $ref: "#/components/schemas/employeeId"
