@@ -213,7 +213,7 @@ paths:
           
   /lines/{line_id}:
     delete:
-      summary: delete a line by id.
+      summary: Delete a line by id.
       tags:
       - Line
       parameters:
@@ -976,7 +976,7 @@ components:
         store_id:
           $ref: "#/components/schemas/storeId"
         drone_id:
-          $ref: "#/components/schemas/storeId"
+          $ref: "#/components/schemas/droneId"
         employee_id:
           $ref: "#/components/schemas/employeeId"
         total_cost:
