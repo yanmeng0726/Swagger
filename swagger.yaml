@@ -75,7 +75,7 @@ components:
         A simple flag to determine the status of drone;
         0: in matainence 1:in progress 2: available
       type: integer
-      readOnly: true
+      example: 0
       enum:
       - 0
       - 1
@@ -99,6 +99,7 @@ components:
       type: object
       description: A single drone
       required:
+
       - weight_limit
       - trips_left
       - store_id
@@ -119,6 +120,22 @@ components:
       description: A collection of selected drones acquired by a query.
       items:
         $ref: "#/components/schemas/Drone"
+
+
+    createDroneReq:
+      type: object
+      description: A request for create drone request
+      required:
+      - trips_left
+      - status
+      - weight_limit
+      properties:
+        trips_left:
+          $ref: "#/components/schemas/tripsLeft"
+        status:
+          $ref: "#/components/schemas/droneStatus"
+        weight_limit:
+          $ref: "#/components/schemas/weightLimit"
 
     updateDroneReq:
       type: object
