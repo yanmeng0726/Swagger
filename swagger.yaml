@@ -14,7 +14,7 @@ tags:
 paths:
   /drones:
     get:
-      summary: rwar of drones.
+      summary: list all drones for a store.
       tags:
       - drone
       responses:
@@ -23,7 +23,7 @@ paths:
           content:
             application/json:
               schema: 
-                $ref: "#/components/schemas/Drones"
+                $ref: "#/components/schemas/Drone"
     post:
       summary: Create an drone
       tags:
