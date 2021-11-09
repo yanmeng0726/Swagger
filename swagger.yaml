@@ -78,7 +78,7 @@ paths:
       tags:
       - Employee
       parameters:
-      - $ref: '#/components/parameters/employeeId'
+      - $ref: '#/components/parameters/storeId'
       responses:
         '200':    # status code
           description: A JSON array of employees
@@ -92,7 +92,7 @@ paths:
       tags:
       - Employee
       parameters:
-      - $ref: '#/components/parameters/employeeId'
+      - $ref: '#/components/parameters/storeId'
       requestBody:
         content:
           application/json:
@@ -315,10 +315,71 @@ paths:
                 $ref: "#/components/schemas/User"
 
 
+  /{store_id}/orders:
+    get:
+      summary: List all orders for a store.
+      tags:
+      - Order
+      parameters:
+      - $ref: '#/components/parameters/storeId'
+      responses:
+        '200':    # status code
+          description: A JSON array of orders
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Orders"
 
+    post:
+      summary: Create an order for a store
+      tags:
+      - Order
+      parameters:
+      - $ref: '#/components/parameters/storeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createOrderReq"
+      responses:
+        201:
+          description: OK
 
-
-
+  /orders/{order_id}:
+    put:
+      summary: Update status of an order
+      tags:
+      - Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateOrderReq"
+      responses:
+        '200':    # status code
+          description: OK
+    get:
+      summary: Get an order by id.
+      tags:
+      - Order
+      parameters:
+      - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':    # status code
+          description: A object of order
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Order"
+    delete:
+      summary: cancel an order
+      tags:
+      - Order
+      parameters:
+      - $ref: '#/components/parameters/orderId'
+      responses:
+        '200':    # status code
+          description: OK
 
 
 
@@ -815,16 +876,93 @@ components:
         credits:
            $ref: "#/components/schemas/credits"
 
+    totalCost:
+      type: number
+      example: 100.27
+      title: cost 
+      description: the total cost of an order
 
+    totalWeight:
+      type: number
+      example: 30.26
+      title: weight 
+      description: the total weight of an order
 
+    orderStatus:
+      type: integer
+      example: 1
+      title: status
+      description:  0-cancel, 1-pending, 2-shipping, 3-delivered 
 
+    Order:
+      type: object
+      description: A single order
+      required:
+      - userId
+      - storeId
+      - droneId
+      - employeeId
+      - totalCost
+      - totalWeight
+      - orderStatus
+      properties:
+        id:
+          $ref: "#/components/schemas/orderId"
+        user_id:
+          $ref: "#/components/schemas/userId"
+        store_id:
+          $ref: "#/components/schemas/storeId"
+        drone_id:
+          $ref: "#/components/schemas/droneId"
+        employee_id:
+          $ref: "#/components/schemas/employeeId"
+        total_cost:
+          $ref: "#/components/schemas/totalCost"
+        total_weight:
+          $ref: "#/components/schemas/totalWeight"
+        order_status:
+          $ref: "#/components/schemas/orderStatus"
 
+    Orders:
+      type: array
+      description: A collection of selected orders acquired by a query.
+      items:
+        $ref: "#/components/schemas/Order"
 
-
-
-
-
-
+    createOrderReq:
+      type: object
+      description: A request for create order
+      required:
+      - userId
+      - storeId
+      - droneId
+      - employeeId
+      - totalCost
+      - totalWeight
+      - orderStatus
+      properties:
+        user_id:
+          $ref: "#/components/schemas/userId"
+        store_id:
+          $ref: "#/components/schemas/storeId"
+        drone_id:
+          $ref: "#/components/schemas/droneId"
+        employee_id:
+          $ref: "#/components/schemas/employeeId"
+        total_cost:
+          $ref: "#/components/schemas/totalCost"
+        total_weight:
+          $ref: "#/components/schemas/totalWeight"
+        order_status:
+          $ref: "#/components/schemas/orderStatus"
+    updateOrderReq:
+      type: object
+      description: A request for updating order status
+      required:
+      - status
+      properties:
+        status:
+          $ref: "#/components/schemas/orderStatus"
 
     
   parameters:
@@ -872,3 +1010,10 @@ components:
       required: true
       schema:
         $ref: "#/components/schemas/userId"
+    orderId:
+      name: id
+      in: path
+      description: A Uniquely random (UUID) used for selecting order
+      required: true
+      schema:
+        $ref: "#/components/schemas/orderId"
