@@ -7,13 +7,13 @@ servers:
   - url: http://localhost:8080
     description:  Use this when running locally in dev or docker mode.
 tags:
-- name: drone
+- name: Drone
   description: drone can deliver order 
-- name: employee
+- name: Employee
   description: pilot can control drone 
-- name: item
+- name: Item
   description: items are sold 
-- name: line
+- name: Line
   description: item constitues line, line constitues order 
 
 paths:
@@ -21,7 +21,7 @@ paths:
     get:
       summary: List all drones for a store.
       tags:
-      - drone
+      - Drone
       parameters:
       - $ref: '#/components/parameters/storeId'
       responses:
@@ -34,7 +34,7 @@ paths:
     post:
       summary: Create an drone for a store
       tags:
-      - drone
+      - Drone
       parameters:
       - $ref: '#/components/parameters/storeId'
       requestBody:
@@ -50,7 +50,7 @@ paths:
     put:
       summary: Update status and trips_left
       tags:
-      - drone
+      - Drone
       parameters:
       - $ref: '#/components/parameters/droneId'
       requestBody:
@@ -70,7 +70,7 @@ paths:
     get:
       summary: List all employees for a store.
       tags:
-      - employee
+      - Employee
       parameters:
       - $ref: '#/components/parameters/employeeId'
       responses:
@@ -84,7 +84,7 @@ paths:
     post:
       summary: Create an employee for a store
       tags:
-      - employee
+      - Employee
       parameters:
       - $ref: '#/components/parameters/employeeId'
       requestBody:
@@ -101,7 +101,7 @@ paths:
     put:
       summary: Update pilot status
       tags:
-      - employee
+      - Employee
       parameters:
       - $ref: '#/components/parameters/employeeId'
       requestBody:
@@ -117,9 +117,9 @@ paths:
               schema: 
                 $ref: "#/components/schemas/Employee"
     get:
-      summary: get a employee by id.
+      summary: Get a employee by id.
       tags:
-      - employee
+      - Employee
       parameters:
       - $ref: '#/components/parameters/employeeId'
       responses:
@@ -134,7 +134,7 @@ paths:
     get:
       summary: List all items for a store.
       tags:
-      - item
+      - Item
       parameters:
       - $ref: '#/components/parameters/itemId'
       responses:
@@ -148,7 +148,7 @@ paths:
     post:
       summary: Create an item for a store
       tags:
-      - item
+      - Item
       parameters:
       - $ref: '#/components/parameters/itemId'
       requestBody:
@@ -162,9 +162,9 @@ paths:
           
   /items/{item_id}:
     get:
-      summary: get an item by id.
+      summary: Get an item by id.
       tags:
-      - item
+      - Item
       parameters:
       - $ref: '#/components/parameters/itemId'
       responses:
@@ -179,7 +179,7 @@ paths:
     get:
       summary: List all lines for an order.
       tags:
-      - line
+      - Line
       parameters:
       - $ref: '#/components/parameters/lineId'
       responses:
@@ -193,7 +193,7 @@ paths:
     post:
       summary: Create a line for an order
       tags:
-      - line
+      - Line
       parameters:
       - $ref: '#/components/parameters/lineId'
       requestBody:
@@ -209,12 +209,75 @@ paths:
     delete:
       summary: delete a line by id.
       tags:
-      - line
+      - Line
       parameters:
       - $ref: '#/components/parameters/lineId'
       responses:
         '200':    # status code
           description: Null response
+
+
+
+
+
+
+  /stores:
+    get:
+      summary: List all stores.
+      tags:
+      - Store
+      parameters:
+      - $ref: '#/components/parameters/storeId'
+      responses:
+        '200':    # status code
+          description: A JSON array of stores
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Stores"
+  
+    post:
+      summary: Create a new store
+      tags:
+      - Store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createStoreReq"
+      responses:
+        201:
+          description: OK
+          
+  /stores/{store_id}:
+    get:
+      summary: get store by id.
+      tags:
+      - Store
+      parameters:
+      - $ref: '#/components/parameters/storeId'
+      responses:
+        '200':    # status code
+          description: A object of store
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Store"
+
+  /stores/{store_id}/pendingIncome:
+    get:
+      summary: get pending income by store id.
+      tags:
+      - Store
+      parameters:
+      - $ref: '#/components/parameters/storeId'
+      responses:
+        '200':    # status code
+          description: A pending income
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/revenue"
 
 
 
@@ -452,7 +515,7 @@ components:
       title: id
       description: A unique signature to represent an item
 
-    name:
+    itemName:
       type: string
       example: iphone
       title: name
@@ -482,7 +545,7 @@ components:
         id:
           $ref: "#/components/schemas/itemId"
         name:
-          $ref: "#/components/schemas/name"
+          $ref: "#/components/schemas/itemName"
         unit_price:
           $ref: "#/components/schemas/unitPrice"
         weight:
@@ -504,7 +567,7 @@ components:
       - weight
       properties:
         name:
-          $ref: "#/components/schemas/name"
+          $ref: "#/components/schemas/itemName"
         unit_price:
           $ref: "#/components/schemas/unitPrice"
         weight:
@@ -568,6 +631,51 @@ components:
           $ref: "#/components/schemas/itemId"
         quantity:
           $ref: "#/components/schemas/quantity"
+
+    storeName:
+      type: string
+      example: Apple
+      title: name
+      description: A unique name of store
+
+    revenue:
+      type: number
+      example: 102000.00
+      title: income
+      description: the received income of store
+
+    Store:
+      type: object
+      description: A single store
+      required:
+      - store_id
+      - name
+      - revenue
+      properties:
+        id:
+          $ref: "#/components/schemas/storeId"
+        name:
+          $ref: "#/components/schemas/storeName"
+        revenue:
+          $ref: "#/components/schemas/revenue"
+
+    Stores:
+      type: array
+      description: A collection of selected stores acquired by a query.
+      items:
+        $ref: "#/components/schemas/Store"
+
+    createStoreReq:
+      type: object
+      description: A request for create store 
+      required:
+      - name
+      properties:
+        name:
+          $ref: "#/components/schemas/storeName"
+
+
+
     
   parameters:
     storeId:
