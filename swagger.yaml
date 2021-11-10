@@ -23,7 +23,7 @@ tags:
   description: order
 
 paths:
-  /{store_id}/drones:
+  /stores/{store_id}/drones:
     get:
       summary: List all drones for a store.
       tags:
@@ -72,7 +72,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/Drone"
 
-  /{store_id}/employees:
+  /stores/{store_id}/employees:
     get:
       summary: List all employees for a store.
       tags:
@@ -136,7 +136,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/Employee"
 
-  /{store_id}/items:
+  /stores/{store_id}/items:
     get:
       summary: List all items for a store.
       tags:
@@ -315,7 +315,7 @@ paths:
                 $ref: "#/components/schemas/User"
 
 
-  /{store_id}/orders:
+  /stores/{store_id}/orders:
     get:
       summary: List all orders for a store.
       tags:
