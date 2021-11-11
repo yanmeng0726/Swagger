@@ -181,7 +181,7 @@ paths:
               schema: 
                 $ref: "#/components/schemas/Item"
 
-  /{order_id}/lines:
+  /orders/{order_id}/lines:
     get:
       summary: List all lines for an order.
       tags:
