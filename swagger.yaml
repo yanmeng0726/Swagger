@@ -52,12 +52,13 @@ paths:
         201:
           description: OK
 
-  /drones/{drone_id}:
+  /stores/{store_id}/drones/{drone_id}:
     put:
       summary: Update status and trips_left
       tags:
       - Drone
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/droneId'
       requestBody:
         content:
@@ -103,12 +104,13 @@ paths:
           description: OK
 
 
-  /employees/{employee_id}:
+  /stores/{store_id}/employees/{employee_id}:
     put:
       summary: Update pilot status
       tags:
       - Employee
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/employeeId'
       requestBody:
         content:
@@ -166,12 +168,13 @@ paths:
         201:
           description: OK
           
-  /items/{item_id}:
+  /stores/{store_id}/items/{item_id}:
     get:
       summary: Get an item by id.
       tags:
       - Item
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/itemId'
       responses:
         '200':    # status code
@@ -181,12 +184,13 @@ paths:
               schema: 
                 $ref: "#/components/schemas/Item"
 
-  /orders/{order_id}/lines:
+  /stores/{store_id}/orders/{order_id}/lines:
     get:
       summary: List all lines for an order.
       tags:
       - Line
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/orderId'
       responses:
         '200':    # status code
@@ -211,12 +215,13 @@ paths:
         201:
           description: OK
           
-  /lines/{line_id}:
+  /stores/{store_id}/lines/{line_id}:
     delete:
       summary: Delete a line by id.
       tags:
       - Line
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/lineId'
       responses:
         '200':    # status code
@@ -345,12 +350,13 @@ paths:
         201:
           description: OK
 
-  /orders/{order_id}:
+  /stores/{store_id}/orders/{order_id}:
     put:
       summary: Update status of an order
       tags:
       - Order
       parameters:
+      - $ref: '#/components/parameters/storeId'
       - $ref: '#/components/parameters/orderId'
       requestBody:
         content:
@@ -411,8 +417,8 @@ components:
       - 1
       - 2
     weightLimit:
-      type: integer
-      example: 40
+      type: number
+      example: 40.00
       title: weight_limit
       description: the capacility of weight 
     tripsLeft:
@@ -803,11 +809,11 @@ components:
       description: A unique signature to represent a user
 
     isManager:
-      type: string
+      type: boolean
       readOnly: true
-      example:  user1
-      title: id
-      description: A unique signature to represent a user
+      example:  true
+      title: is manager
+      description: A unique signature to represent a manager
 
 
     userName:
@@ -870,7 +876,7 @@ components:
         user_name:
           $ref: "#/components/schemas/userName"
         password:
-           $ref: "#/components/schemas/passwordd"
+           $ref: "#/components/schemas/passwords"
         address:
            $ref: "#/components/schemas/address"
         customer_rating:
@@ -1004,21 +1010,21 @@ components:
     storeId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting one Store
+      description: A Uniquely random (integer) used for selecting one Store
       required: true
       schema:
         $ref: "#/components/schemas/storeId"
     droneId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting one Drone
+      description: A Uniquely random (integer) used for selecting one Drone
       required: true
       schema:
         $ref: "#/components/schemas/droneId"
     employeeId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting one Employee
+      description: A Uniquely random (integer) used for selecting one Employee
       required: true
       schema:
         $ref: "#/components/schemas/employeeId"
@@ -1026,7 +1032,7 @@ components:
     itemId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting one Item
+      description: A Uniquely random (integer) used for selecting one Item
       required: true
       schema:
         $ref: "#/components/schemas/itemId"
@@ -1034,21 +1040,21 @@ components:
     lineId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting one Line
+      description: A Uniquely random (integer) used for selecting one Line
       required: true
       schema:
         $ref: "#/components/schemas/lineId"
     userId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting user
+      description: A Uniquely random (integer) used for selecting user
       required: true
       schema:
         $ref: "#/components/schemas/userId"
     orderId:
       name: id
       in: path
-      description: A Uniquely random (UUID) used for selecting order
+      description: A Uniquely random (integer) used for selecting order
       required: true
       schema:
         $ref: "#/components/schemas/orderId"
