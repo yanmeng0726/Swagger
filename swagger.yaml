@@ -124,19 +124,6 @@ paths:
             application/json:
               schema: 
                 $ref: "#/components/schemas/Employee"
-    get:
-      summary: Get a employee by id.
-      tags:
-      - Employee
-      parameters:
-      - $ref: '#/components/parameters/employeeId'
-      responses:
-        '200':    # status code
-          description: A object of employees
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Employee"
 
   /stores/{store_id}/items:
     get:
@@ -167,22 +154,6 @@ paths:
       responses:
         201:
           description: OK
-          
-  /stores/{store_id}/items/{item_id}:
-    get:
-      summary: Get an item by id.
-      tags:
-      - Item
-      parameters:
-      - $ref: '#/components/parameters/storeId'
-      - $ref: '#/components/parameters/itemId'
-      responses:
-        '200':    # status code
-          description: A object of item
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Item"
 
   /stores/{store_id}/orders/{order_id}/lines:
     get:
@@ -366,19 +337,7 @@ paths:
       responses:
         '200':    # status code
           description: OK
-    get:
-      summary: Get an order by id.
-      tags:
-      - Order
-      parameters:
-      - $ref: '#/components/parameters/orderId'
-      responses:
-        '200':    # status code
-          description: A object of order
-          content:
-            application/json:
-              schema: 
-                $ref: "#/components/schemas/Order"
+   
     delete:
       summary: Cancel an order
       tags:
@@ -994,7 +953,7 @@ components:
         order_status:
           $ref: "#/components/schemas/orderStatus"
         user_id:
-          $ref: "#/components/schemas/userId"
+          $ref: "#/components/schemas/storeId"
           
     updateOrderReq:
       type: object
