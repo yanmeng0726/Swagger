@@ -871,7 +871,7 @@ components:
         user_name:
           $ref: "#/components/schemas/userName"
         password:
-           $ref: "#/components/schemas/passwordd"
+           $ref: "#/components/schemas/password"
         address:
            $ref: "#/components/schemas/address"
         customer_rating:
